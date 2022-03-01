@@ -1,6 +1,6 @@
 # SilenceOnTheWire Lumen Users implementation
 
-This is a simple interpretation of the chat application for everyone based on the GPL 3.0 license. Code under the GNU GPL license cannot be used in programs based on other licenses.
+This is a simple interpretation of the users microservice implementation for everyone based on the GPL 3.0 license. Code under the GNU GPL license cannot be used in programs based on other licenses.
 
 ## Official Documentation
 
