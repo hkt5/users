@@ -22,9 +22,9 @@ before_install:
   # - phpenv config-rm xdebug.ini || true
 
   # initialize databases
-  - mysql -u root -e "CREATE DATABASE homestead;"
-  - mysql -u root -e "CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret';"
-  - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'homestead'@'%' WITH GRANT OPTION;"
+  - mysql -u root -e "CREATE DATABASE test_database;"
+  - mysql -u root -e "CREATE USER 'admin'@'%' IDENTIFIED BY 'rootpass';"
+  - mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;"
 
 install:
 
