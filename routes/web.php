@@ -16,3 +16,6 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/roles/all', 'RoleController@findAll');
+$router->get('/roles/by-id/{id}', 'RoleController@findById');
