@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\RoleService;
+use App\Services\StatusService;
 use Illuminate\Http\JsonResponse;
 
-class RoleController extends Controller
+class StatusController extends Controller
 {
     /**
-     * @var RoleService service
+     * @var StatusService service
      */
-    private RoleService $service;
+    private StatusService $service;
 
     /**
      * __construct
      *
-     * @param RoleService service
+     * @param StatusService service
      *
      * @return void
      */
-    public function __construct(RoleService $service)
+    public function __construct(StatusService $service)
     {
         $this->service = $service;
     }

@@ -19,3 +19,6 @@ $router->get('/', function () use ($router) {
 
 $router->get('/roles/all', 'RoleController@findAll');
 $router->get('/roles/by-id/{id}', 'RoleController@findById');
+
+$router->get('/statuses/all', 'StatusController@findAll');
+$router->get('/statuses/by-id/{id}', 'StatusController@findById');
