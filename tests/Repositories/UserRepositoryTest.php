@@ -133,6 +133,183 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($expectedUser, $currentUser);
     }
 
+
+    public function test_FindAuthUser_WhenUuidExists_ThenReturnUser() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date;
+        $user->last_password_changed = $date;
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => $user->uuid, 'status_id' => $user->status_id,
+                'role_id' => $user->role_id,
+            ]
+        );
+
+        // then
+        $this->assertNotNull($result);
+    }
+
+    public function test_FindAuthUser_WhenUuidNotExists_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date;
+        $user->last_password_changed = $date;
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => Uuid::uuid4(), 'status_id' => $user->status_id,
+                'role_id' => $user->role_id,
+            ]
+        );
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_FindAuthUser_WhenTokenExpired_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date->subDay();
+        $user->last_password_changed = $date;
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => $user->uuid, 'status_id' => $user->status_id,
+                'role_id' => $user->role_id,
+            ]
+        );
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_FindAuthUser_WhenPasswordExpired_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date;
+        $user->last_password_changed = $date->subDays(31);
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => $user->uuid, 'status_id' => $user->status_id,
+                'role_id' => $user->role_id,
+            ]
+        );
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_FindAuthUser_WhenAccountNotConfirmed_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date;
+        $user->last_password_changed = $date;
+        $user->is_confirmed = false;
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => $user->uuid, 'status_id' => $user->status_id,
+                'role_id' => $user->role_id,
+            ]
+        );
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_FindAuthUser_WhenStatusNotExists_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date;
+        $user->last_password_changed = $date;
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => $user->uuid, 'status_id' => StatusId::INACTIVE,
+                'role_id' => $user->role_id,
+            ]
+        );
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_FindAuthUser_WhenRoleNotExists_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $date = Carbon::now();
+        $user = User::find($id);
+        $user->expired_token = $date;
+        $user->last_password_changed = $date;
+        $user->status_id = StatusId::ACTIVE;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->findAuthUser(
+            [
+                'uuid' => $user->uuid, 'status_id' => $user->status_id,
+                'role_id' => 15,
+            ]
+        );
+
+        // then
+        $this->assertNull($result);
+    }
+
     public function test_Create() : void
     {
 
@@ -274,6 +451,28 @@ class UserRepositoryTest extends TestCase
         $this->seeInDatabase('users', ['uuid' => $data['uuid'],]);
         $this->seeInDatabase('users', ['expired_token' => $data['expired_token'],]);
         $this->seeInDatabase('users', ['updated_at' => $data['updated_at'],]);
+    }
+
+    public function test_UpdateExpiredToken_WhenUserExists_ThenTokenUpdated() : void
+    {
+
+        // given
+        $date = Carbon::now();
+        $data = [
+            'id' => 1,
+            'date' => $date,
+        ];
+        $repository = new UserRepository();
+
+        // when
+        $user = $repository->updateExpiredToken($data);
+
+        // then
+        $this->assertEquals($data['date']->format('Y-m-d H:m:s'), $user->updated_at->format('Y-m-d H:m:s'));
+        $this->assertEquals(
+            $data['date']->addMinutes(env('TOKEN_EXPIRE'))->format('Y-m-d H:m:s'),
+            $user->expired_token->format('Y-m-d H:m:s')
+        );
     }
 
     public function test_Destroy_WhenDestroyUser_ThenUserNotExists() : void

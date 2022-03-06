@@ -56,6 +56,22 @@ class UserRepository
         return User::where('uuid', $uuid)->first(['*']);
     }
 
+    /**
+     * findAuthUser
+     *
+     * @param array data
+     *
+     * @return User
+     */
+    public function findAuthUser(array $data) : ?User
+    {
+        return User::where('uuid', $data['uuid'])
+            ->where('last_password_changed', '>', Carbon::now()->subDays(env('PASSWORD_EXPIRE')))
+            ->where('expired_token', '>', Carbon::now()->subMinutes(env('TOKEN_EXPIRE')))
+            ->where('login_attemps', '<', env('LOGIN_ATTEMPS'))->where('status_id', $data['status_id'])
+            ->where('role_id', $data['role_id'])->where('is_confirmed', '=', true)->first(['*']);
+    }
+
     public function login(array $data) : ?User
     {
         $user = User::where('email', $data['email'])->first(['*']);
@@ -169,6 +185,22 @@ class UserRepository
         $user->uuid = $data['uuid'];
         $user->expired_token = $data['expired_token'];
         $user->updated_at = $data['updated_at'];
+        $user->save();
+        return $user;
+    }
+
+    /**
+     * updateExpiredToken
+     *
+     * @param array data
+     *
+     * @return User
+     */
+    public function updateExpiredToken(array $data) : ?User
+    {
+        $user = User::find($data['id']);
+        $user->expired_token = $data['date']->addMinutes(env('TOKEN_EXPIRE'));
+        $user->updated_at = $data['date'];
         $user->save();
         return $user;
     }

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Enums\StatusId;
+use App\Repositories\RoleRepository;
+use App\Repositories\StatusRepository;
 use App\Repositories\UserRepository;
 use App\Validators\LoginValidator;
 use Carbon\Carbon;
@@ -14,27 +16,42 @@ use Ramsey\Uuid\Uuid;
 class LoginService
 {
     /**
-     * @var UserRepository repository
+     * @var UserRepository userRepository
      */
-    private UserRepository $repository;
+    private UserRepository $userRepository;
+    /**
+     * @var RoleRepository roleRepository
+     */
+    private RoleRepository $roleRepository;
+    /**
+     * @var StatusRepository statusRepository
+     */
+    private StatusRepository $statusRepository;
     /**
      * @var ResponseService service
      */
     private ResponseService $service;
 
+
     /**
      * __construct
      *
-     * @param UserRepository repository
+     * @param UserRepository userRepository
+     * @param RoleRepository roleRepository
+     * @param StatusRepository statusRepository
      * @param ResponseService service
      *
      * @return void
      */
     public function __construct(
-        UserRepository $repository,
+        UserRepository $userRepository,
+        RoleRepository $roleRepository,
+        StatusRepository $statusRepository,
         ResponseService $service
     ) {
-        $this->repository = $repository;
+        $this->userRepository = $userRepository;
+        $this->statusRepository = $statusRepository;
+        $this->roleRepository = $roleRepository;
         $this->service = $service;
     }
 
@@ -68,7 +85,7 @@ class LoginService
      */
     private function auth(array $data) : array
     {
-        $user = $this->repository->findByEmail($data['email']);
+        $user = $this->userRepository->findByEmail($data['email']);
         if ($user == null) {
             return $this->service->response(null, null, Response::HTTP_UNAUTHORIZED);
         } elseif (!$user->is_confirmed) {
@@ -80,7 +97,7 @@ class LoginService
         } elseif ($user->login_attemps >= env('LOGIN_ATTEMPS')) {
             $data = $user->toArray();
             $data['status_id'] = StatusId::INACTIVE;
-            $user = $this->repository->update($data);
+            $user = $this->userRepository->update($data);
             return $this->service->response(
                 null,
                 ['error' => 'auth.login_attemps',],
@@ -91,7 +108,7 @@ class LoginService
         ) {
             $data = $user->toArray();
             $data['status_id'] = StatusId::INACTIVE;
-            $user = $this->repository->update($data);
+            $user = $this->userRepository->update($data);
             return $this->service->response(
                 null,
                 ['error' => 'auth.password_expired',],
@@ -106,13 +123,17 @@ class LoginService
         } elseif (!Hash::check($data['password'], $user->password)) {
             return $this->service->response(null, null, Response::HTTP_UNAUTHORIZED);
         } else {
-            $currentUser = $this->repository->updateToken([
+            $currentUser = $this->userRepository->updateToken([
                 'id' => $user->id,
                 'uuid' => Uuid::uuid4(),
                 'expired_token' => Carbon::now()->addMinutes(15),
                 'updated_at' => Carbon::now(),
             ]);
-            return $this->service->response($currentUser, null, Response::HTTP_OK);
+            return $this->service->response([
+                'user' => $currentUser,
+                'role' => $this->roleRepository->findById($currentUser->role_id),
+                'status' => $this->statusRepository->findById($currentUser->status_id),
+            ], null, Response::HTTP_OK);
         }
     }
 }
