@@ -2,9 +2,15 @@
 
 This is a simple interpretation of the users microservice implementation for everyone based on the GPL 3.0 license. Code under the GNU GPL license cannot be used in programs based on other licenses.
 
+## Attention ##
+
+This repo required log microservice: (https://github.com/hkt5/logs)[https://github.com/hkt5/logs].
+
 ## Official Documentation
 
 If you can setup database, cp .en.example to .env.
+
+Add log microservice address to variable LOG_URL in  your .env file.
 
 The first is database instalation. You must use command:
 

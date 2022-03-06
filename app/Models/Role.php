@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 class Role extends Model
@@ -47,4 +48,14 @@ class Role extends Model
      * @var mixed dates
      */
     protected $dates = ['created_at', 'updated_at',];
+
+    /**
+     * users
+     *
+     * @return HasMany
+     */
+    public function users() : HasMany
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }

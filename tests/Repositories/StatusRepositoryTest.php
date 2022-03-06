@@ -4,10 +4,26 @@ namespace Tests\Repositories;
 
 use App\Enums\StatusId;
 use App\Repositories\StatusRepository;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class StatusRepositoryTest extends TestCase
 {
+    use DatabaseMigrations {
+        runDatabaseMigrations as baseRunDatabaseMigrations;
+    }
+
+    /**
+     * Define hooks to migrate the database before and after each test.
+     *
+     * @return void
+     */
+    public function runDatabaseMigrations()
+    {
+        $this->baseRunDatabaseMigrations();
+        $this->artisan('db:seed');
+    }
+
     public function test_FindAll_WhenStatusesAreAvailable() : void
     {
 

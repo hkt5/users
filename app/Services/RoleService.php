@@ -15,15 +15,24 @@ class RoleService
     private RoleRepository $repository;
 
     /**
+     * @var ResponseService service
+     */
+    private ResponseService $service;
+
+    /**
      * __construct
      *
      * @param RoleRepository repository
+     * @param ResponseService service
      *
      * @return void
      */
-    public function __construct(RoleRepository $repository)
-    {
+    public function __construct(
+        RoleRepository $repository,
+        ResponseService $service
+    ) {
         $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
@@ -35,15 +44,14 @@ class RoleService
     {
         try {
             $roles = $this->repository->findAll()->toArray();
-            return [
-                'content' => $roles, 'errors' => null, 'code' => Response::HTTP_OK
-            ];
+            return $this->service->response($roles, null, Response::HTTP_OK);
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return [
-                'content' => null, 'errors' => ['exception' => $e->getMessage()],
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR
-            ];
+            return $this->service->response(
+                null,
+                ['exception' => $e->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -59,22 +67,17 @@ class RoleService
         try {
             $role = $this->repository->findById($id);
             if ($role !== null) {
-                return [
-                    'content' => $role, 'errors' => null,
-                    'code' => Response::HTTP_OK
-                ];
+                return $this->service->response($role, null, Response::HTTP_OK);
             } else {
-                return [
-                    'content' => null, 'errors' => null,
-                    'code' => Response::HTTP_NOT_FOUND
-                ];
+                return $this->service->response(null, null, Response::HTTP_NOT_FOUND);
             }
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return [
-                'content' => null, 'errors' => ['exception' => $e->getMessage()],
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR
-            ];
+            return $this->service->response(
+                null,
+                ['exception' => $e->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 }

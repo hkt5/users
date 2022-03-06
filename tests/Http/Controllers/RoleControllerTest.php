@@ -5,10 +5,26 @@ namespace Tests\Http\Controllers;
 use App\Enums\RoleId;
 use App\Models\Role;
 use Illuminate\Http\Response;
+use Laravel\Lumen\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class RoleControllerTest extends TestCase
 {
+    use DatabaseMigrations {
+        runDatabaseMigrations as baseRunDatabaseMigrations;
+    }
+
+    /**
+     * Define hooks to migrate the database before and after each test.
+     *
+     * @return void
+     */
+    public function runDatabaseMigrations()
+    {
+        $this->baseRunDatabaseMigrations();
+        $this->artisan('db:seed');
+    }
+
     public function test_WhenFindAllRoles_ThenReturnAvailableRolesAndStatusOk() : void
     {
 

@@ -14,11 +14,11 @@ class RoleId
      */
     const EMPLOYEE_ID = 2;
     /**
-     * @var BUSINESS_OWNER
+     * @var BUSINESS_OWNER_ID
      */
-    const BUSINESS_OWNER = 3;
+    const BUSINESS_OWNER_ID = 3;
     /**
-     * @var ADMINISTRATOR
+     * @var ADMINISTRATOR_ID
      */
-    const ADMINISTRATOR = 4;
+    const ADMINISTRATOR_ID = 4;
 }
