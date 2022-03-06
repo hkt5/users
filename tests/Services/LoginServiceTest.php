@@ -4,6 +4,8 @@ namespace Tests\Services;
 
 use App\Enums\StatusId;
 use App\Models\User;
+use App\Repositories\RoleRepository;
+use App\Repositories\StatusRepository;
 use App\Repositories\UserRepository;
 use App\Services\LoginService;
 use App\Services\ResponseService;
@@ -44,7 +46,12 @@ class LoginServiceTest extends TestCase
             ],
             'code' => Response::HTTP_NOT_ACCEPTABLE,
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -64,7 +71,12 @@ class LoginServiceTest extends TestCase
         $expectedArray = [
             'content' => null, 'errors' => null, 'code' => Response::HTTP_UNAUTHORIZED
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -90,7 +102,12 @@ class LoginServiceTest extends TestCase
             'errors' => ['error' => 'auth.not_confirmed',],
             'code' => Response::HTTP_UNAUTHORIZED
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -116,7 +133,12 @@ class LoginServiceTest extends TestCase
             'errors' => ['error' => 'auth.login_attemps',],
             'code' => Response::HTTP_UNAUTHORIZED
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -142,7 +164,12 @@ class LoginServiceTest extends TestCase
             'errors' => ['error' => 'auth.password_expired',],
             'code' => Response::HTTP_UNAUTHORIZED
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -168,7 +195,12 @@ class LoginServiceTest extends TestCase
             'errors' => ['error' => 'auth.account_inactive',],
             'code' => Response::HTTP_UNAUTHORIZED
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -188,7 +220,12 @@ class LoginServiceTest extends TestCase
         $expectedArray = [
             'content' => null, 'errors' => null, 'code' => Response::HTTP_UNAUTHORIZED
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
@@ -206,7 +243,12 @@ class LoginServiceTest extends TestCase
             'email' => $email,
             'password' => 'P@ssw0rd',
         ];
-        $service = new LoginService(new UserRepository(), new ResponseService());
+        $service = new LoginService(
+            new UserRepository(),
+            new RoleRepository(),
+            new StatusRepository(),
+            new ResponseService()
+        );
 
         // when
         $response = $service->login($data);
