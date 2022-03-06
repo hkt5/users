@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserEvent;
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class UserListener
 {
@@ -25,7 +25,6 @@ class UserListener
      */
     public function handle(UserEvent $event)
     {
-        $client = new Client();
-        $client->postAsync(env('LOG_URL'), $event->postData);
+        Http::post(env('LOG_URL'), $event->data);
     }
 }
