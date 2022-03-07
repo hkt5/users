@@ -24,5 +24,6 @@ $router->get('/statuses/all', 'StatusController@findAll');
 $router->get('/statuses/by-id/{id}', 'StatusController@findById');
 
 $router->post('/auth/login', 'AuthController@login');
+$router->post('/auth/register', 'AuthController@register');
 
 $router->post('/api/logs', 'LogsApiAuthController@auth');
