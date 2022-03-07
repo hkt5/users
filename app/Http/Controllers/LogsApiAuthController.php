@@ -9,8 +9,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LogsApiAuthController extends Controller
-{
-    private LogsApiAuthService $authService;
+{    
+    /**
+     * @var LogsApiAuthService authService
+     */
+    private LogsApiAuthService $authService;    
+    /**
+     * @var EventService eventService
+     */
     private EventService $eventService;
 
     public function __construct(
@@ -20,7 +26,14 @@ class LogsApiAuthController extends Controller
         $this->authService = $authService;
         $this->eventService = $eventService;
     }
-
+    
+    /**
+     * auth
+     *
+     * @param Request request
+     *
+     * @return JsonResponse
+     */
     public function auth(Request $request) : JsonResponse
     {
         $result = $this->authService->auth($request->header('Bareer'));
