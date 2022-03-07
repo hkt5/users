@@ -73,7 +73,7 @@ class UserRepositoryTest extends TestCase
         $this->assertEquals($expectedUser, $currentUser);
     }
 
-    public function test_findByEmail_WhenEmailExists_ThenReturnUser() : void
+    public function test_FindByEmail_WhenEmailExists_ThenReturnUser() : void
     {
 
         // given
@@ -473,6 +473,73 @@ class UserRepositoryTest extends TestCase
             $data['date']->addMinutes(env('TOKEN_EXPIRE'))->format('Y-m-d H:m:s'),
             $user->expired_token->format('Y-m-d H:m:s')
         );
+    }
+
+    public function test_ConfirmPassword_WhenDataIsOk_ThenReturnUser() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+        $user->expired_token = Carbon::now()->addMinutes(env('TOKEN_EXPIRE'));
+        $user->is_confirmed = false;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->confirmAccount(['uuid' => $user->uuid]);
+
+        // then
+        $this->assertNotNull($result);
+    }
+
+    public function test_ConfirmPassword_WhenTokenExpired_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+        $user->expired_token = Carbon::now()->subMinutes(env('TOKEN_EXPIRE') + 1);
+        $user->is_confirmed = false;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->confirmAccount(['uuid' => $user->uuid]);
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_ConfirmPassword_WhenAccountIsConfirmed_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+        $user->expired_token = Carbon::now()->addMinutes(env('TOKEN_EXPIRE'));
+        $user->is_confirmed = true;
+        $user->save();
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->confirmAccount(['uuid' => $user->uuid]);
+
+        // then
+        $this->assertNull($result);
+    }
+
+    public function test_ConfirmPassword_WhenUuidNotExists_ThenReturnNull() : void
+    {
+
+        // given
+        $repository = new UserRepository();
+
+        // when
+        $result = $repository->confirmAccount(['uuid' => "uuid"]);
+
+        // then
+        $this->assertNull($result);
     }
 
     public function test_Destroy_WhenDestroyUser_ThenUserNotExists() : void
