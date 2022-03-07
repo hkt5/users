@@ -10,10 +10,13 @@ use App\Services\ResponseService;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+use Laravel\Lumen\Testing\WithoutEvents;
 use Tests\TestCase;
 
 class PasswordConfirmationServiceTest extends TestCase
 {
+    use WithoutEvents;
+
     use DatabaseMigrations {
         runDatabaseMigrations as baseRunDatabaseMigrations;
     }
