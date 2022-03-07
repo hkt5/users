@@ -355,4 +355,83 @@ class AuthControllerTest extends TestCase
         // then
         $result->seeStatusCode($code);
     }
+
+    public function test_ConfirmPassword_WhenDataIsOk_ThenReturnUser() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+        $user->expired_token = Carbon::now()->addMinutes(env('TOKEN_EXPIRE'));
+        $user->is_confirmed = false;
+        $user->save();
+        $code = Response::HTTP_OK;
+
+        // when
+        $result = $this->get('/auth/confirm-password/'.$user->uuid);
+
+        // then
+        $result->seeStatusCode($code);
+    }
+
+    public function test_ConfirmPassword_WhenTokenExpired_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+        $user->expired_token = Carbon::now()->subMinutes(env('TOKEN_EXPIRE') + 1);
+        $user->is_confirmed = false;
+        $user->save();
+        $data = [
+            'content' => null, 'errors' => null,
+        ];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->get('/auth/confirm-password/'.$user->uuid);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($data);
+    }
+
+    public function test_ConfirmPassword_WhenAccountIsConfirmed_ThenReturnNull() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+        $user->expired_token = Carbon::now()->addMinutes(env('TOKEN_EXPIRE'));
+        $user->is_confirmed = true;
+        $user->save();
+        $data = [
+            'content' => null, 'errors' => null,
+        ];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->get('/auth/confirm-password/'.$user->uuid);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($data);
+    }
+
+    public function test_ConfirmPassword_WhenUuidNotExists_ThenReturnNull() : void
+    {
+
+        // given
+        $data = [
+            'content' => null, 'errors' => null,
+        ];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->get('/auth/confirm-password/uuid');
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($data);
+    }
 }

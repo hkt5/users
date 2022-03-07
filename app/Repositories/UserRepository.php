@@ -206,6 +206,26 @@ class UserRepository
     }
 
     /**
+     * confirmPassword
+     *
+     * @param array data
+     *
+     * @return User
+     */
+    public function confirmAccount(array $data) : ?User
+    {
+        $user = User::where('uuid', $data['uuid'])
+            ->where('expired_token', '>', Carbon::now()->subMinutes(env('TOKEN_EXPIRE')))
+            ->where('is_confirmed', '=', false)->first(['*']);
+        if ($user !== null) {
+            $user->is_confirmed = true;
+            $user->updated_at = Carbon::now();
+            $user->save();
+        }
+        return $user;
+    }
+
+    /**
      * destroy
      *
      * @param int id
