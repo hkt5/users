@@ -214,4 +214,145 @@ class AuthControllerTest extends TestCase
         $response->seeJsonContains($contains);
         $response->seeStatusCode($status);
     }
+
+    public function test_RegistryUser_WhenFieldsAreEmpty_ThenReturnNotAcceptableCode() : void
+    {
+
+        // given
+        $data = [];
+        $expectedArray = [
+            'content' => null,
+            'errors' => [
+                'email' => [0 => 'The email field is required.'],
+                'password' => [0 => 'The password field is required.'],
+                'password_confirmation' => [0 => 'The password confirmation field is required.'],
+            ],
+        ];
+        $code  = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post('/auth/register', $data);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJsonEquals($expectedArray);
+    }
+
+    public function test_RegistryUser_WhenEmailHasBadFormat_ThenReturnNotAcceptableCode() : void
+    {
+
+        // given
+        $data = [
+            'email' => 'email',
+            'password' => 'P@ssw0rdP@ssw0rd',
+            'password_confirmation' => 'P@ssw0rdP@ssw0rd'
+        ];
+        $expectedArray = [
+            'content' => null,
+            'errors' => [
+                'email' => [0 => 'The email must be a valid email address.'],
+            ],
+        ];
+        $code  = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post('/auth/register', $data);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJsonEquals($expectedArray);
+    }
+
+    public function test_RegistryUser_WhenEmailExists_ThenReturnNotAcceptableCode() : void
+    {
+
+        // given
+        $data = [
+            'email' => 'email@example.com',
+            'password' => 'P@ssw0rdP@ssw0rd',
+            'password_confirmation' => 'P@ssw0rdP@ssw0rd'
+        ];
+        $expectedArray = [
+            'content' => null,
+            'errors' => [
+                'email' => [0 => 'The email has already been taken.'],
+            ],
+        ];
+        $code  = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post('/auth/register', $data);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJsonEquals($expectedArray);
+    }
+
+    public function test_RegistryUser_WhenPasswordToShort_ThenReturnNotAcceptableCode() : void
+    {
+
+        // given
+        $data = [
+            'email' => 'email23@example.com',
+            'password' => 'P@ssw0rd',
+            'password_confirmation' => 'P@ssw0rd'
+        ];
+        $expectedArray = [
+            'content' => null,
+            'errors' => [
+                'password' => [0 => 'The password must be at least 12 characters.'],
+            ],
+        ];
+        $code  = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post('/auth/register', $data);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJsonEquals($expectedArray);
+    }
+
+    public function test_RegistryUser_WhenPasswordsMismatch_ThenReturnNotAcceptableCode() : void
+    {
+
+        // given
+        $data = [
+            'email' => 'email23@example.com',
+            'password' => 'P@ssw0rdP@ssw0rd',
+            'password_confirmation' => 'P@ssw0rdP@ssw0rdP@ssw0rd'
+        ];
+        $expectedArray = [
+            'content' => null,
+            'errors' => [
+                'password' => [0 => 'The password confirmation does not match.'],
+            ],
+        ];
+        $code  = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post('/auth/register', $data);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJsonEquals($expectedArray);
+    }
+
+    public function test_RegistryUser_WhenUserDataIsOk_ThenReturnOKCode() : void
+    {
+
+        // given
+        $data = [
+            'email' => 'email23@example.com',
+            'password' => 'P@ssw0rdP@ssw0rd',
+            'password_confirmation' => 'P@ssw0rdP@ssw0rd'
+        ];
+        $code  = Response::HTTP_OK;
+
+        // when
+        $result = $this->post('/auth/register', $data);
+
+        // then
+        $result->seeStatusCode($code);
+    }
 }

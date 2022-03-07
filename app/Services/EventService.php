@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\RegisterEmailEvent;
 use App\Events\UserEvent;
 use Illuminate\Http\Request;
 
@@ -29,5 +30,10 @@ class EventService
             'message' => json_encode($data['message']),
         ];
         event(new UserEvent($data));
+    }
+
+    public function sendRegisterEmail(array $data) : void
+    {
+        event(new RegisterEmailEvent($data));
     }
 }
