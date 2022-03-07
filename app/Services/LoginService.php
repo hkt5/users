@@ -123,6 +123,7 @@ class LoginService
         } elseif (!Hash::check($data['password'], $user->password)) {
             return $this->service->response(null, null, Response::HTTP_UNAUTHORIZED);
         } else {
+            $this->userRepository->updateLoginAttemps(['id' => $user->id]);
             $currentUser = $this->userRepository->updateToken([
                 'id' => $user->id,
                 'uuid' => Uuid::uuid4(),
