@@ -4,6 +4,7 @@ namespace Tests\Services;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Services\EventService;
 use App\Services\PasswordConfirmationService;
 use App\Services\ResponseService;
 use Carbon\Carbon;
@@ -38,7 +39,11 @@ class PasswordConfirmationServiceTest extends TestCase
         $user->is_confirmed = false;
         $user->save();
         $code = Response::HTTP_OK;
-        $service = new PasswordConfirmationService(new UserRepository(), new ResponseService());
+        $service = new PasswordConfirmationService(
+            new UserRepository(),
+            new ResponseService(),
+            new EventService()
+        );
 
         // when
         $result = $service->confirm(['uuid' => $user->uuid]);
@@ -60,7 +65,11 @@ class PasswordConfirmationServiceTest extends TestCase
         $data = [
             'content' => null, 'errors' => null, 'code' => Response::HTTP_NOT_ACCEPTABLE,
         ];
-        $service = new PasswordConfirmationService(new UserRepository(), new ResponseService());
+        $service = new PasswordConfirmationService(
+            new UserRepository(),
+            new ResponseService(),
+            new EventService()
+        );
 
         // when
         $result = $service->confirm(['uuid' => $user->uuid]);
@@ -81,7 +90,11 @@ class PasswordConfirmationServiceTest extends TestCase
         $data = [
             'content' => null, 'errors' => null, 'code' => Response::HTTP_NOT_ACCEPTABLE,
         ];
-        $service = new PasswordConfirmationService(new UserRepository(), new ResponseService());
+        $service = new PasswordConfirmationService(
+            new UserRepository(),
+            new ResponseService(),
+            new EventService()
+        );
 
         // when
         $result = $service->confirm(['uuid' => $user->uuid]);
@@ -97,12 +110,61 @@ class PasswordConfirmationServiceTest extends TestCase
         $data = [
             'content' => null, 'errors' => null, 'code' => Response::HTTP_NOT_ACCEPTABLE,
         ];
-        $service = new PasswordConfirmationService(new UserRepository(), new ResponseService());
+        $service = new PasswordConfirmationService(
+            new UserRepository(),
+            new ResponseService(),
+            new EventService()
+        );
 
         // when
         $result = $service->confirm(['uuid' => "uuid"]);
 
         // then
         $this->assertEquals($data, $result);
+    }
+
+    public function test_GenerateToken_WhenOldTokenExists_ReturnStatusOk() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+
+        $data = [
+            'content' => null, 'errors' => null, 'code' => Response::HTTP_OK,
+        ];
+        $service = new PasswordConfirmationService(
+            new UserRepository(),
+            new ResponseService(),
+            new EventService()
+        );
+
+        // when
+        $result = $service->regenerateToken(['uuid' => $user->uuid]);
+
+        // then
+        $this->assertEquals($data['code'], $result['code']);
+        $this->assertEquals($data['errors'], $result['errors']);
+    }
+
+    public function test_GenerateToken_WhenOldTokenNotExists_ReturnStatusNotFound() : void
+    {
+
+        // given
+        $data = [
+            'content' => null, 'errors' => null, 'code' => Response::HTTP_NOT_FOUND,
+        ];
+        $service = new PasswordConfirmationService(
+            new UserRepository(),
+            new ResponseService(),
+            new EventService()
+        );
+
+        // when
+        $result = $service->regenerateToken(['uuid' => "uuid"]);
+
+        // then
+        $this->assertEquals($data['code'], $result['code']);
+        $this->assertEquals($data['errors'], $result['errors']);
     }
 }
