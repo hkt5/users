@@ -434,4 +434,36 @@ class AuthControllerTest extends TestCase
         $result->seeStatusCode($code);
         $result->seeJson($data);
     }
+
+    public function test_GenerateToken_WhenOldTokenExists_ReturnStatusOk() : void
+    {
+
+        // given
+        $id = 1;
+        $user = User::find($id);
+
+        $data = [
+            'content' => null, 'errors' => null,
+        ];
+        $code = Response::HTTP_OK;
+        // when
+        $result = $this->get('/auth/regenerate-token/'.$user->uuid);
+        // then
+        $result->seeStatusCode($code);
+    }
+
+    public function test_GenerateToken_WhenOldTokenNotExists_ReturnStatusNotFound() : void
+    {
+
+        // given
+        $data = [
+            'content' => null, 'errors' => null,
+        ];
+        $code = Response::HTTP_NOT_FOUND;
+        // when
+        $result = $this->get('/auth/regenerate-token/uuid');
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($data);
+    }
 }

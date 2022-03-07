@@ -69,4 +69,18 @@ class AuthController extends Controller
             $result['code']
         );
     }
+
+    public function regenerate(Request $request, string $uuid) : JsonResponse
+    {
+        $result = $this->passwordConfirmationService->regenerateToken(['uuid' => $uuid]);
+        $logdata = [
+            'reason' => $result['code'],
+            'message' => $result,
+        ];
+        $this->eventService->createUserEvent($request, $logdata);
+        return response()->json(
+            ['content' => $result['content'], 'errors' => $result['errors'],],
+            $result['code']
+        );
+    }
 }
