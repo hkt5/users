@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\RegisterEmailEvent;
+use App\Events\ResetPasswordEvent;
 use App\Events\UserEvent;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class EventService
      *
      * @return void
      */
-    public function createUserEvent(Request $request, array $data) : void
+    public function logEvent(Request $request, array $data) : void
     {
         $data = [
             'user' => -1,
@@ -35,5 +36,10 @@ class EventService
     public function sendRegisterEmail(array $data) : void
     {
         event(new RegisterEmailEvent($data));
+    }
+
+    public function sendPasswordEmail(array $data) : void
+    {
+        event(new ResetPasswordEvent($data));
     }
 }

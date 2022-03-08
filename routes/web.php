@@ -27,5 +27,6 @@ $router->post('/auth/login', 'AuthController@login');
 $router->post('/auth/register', 'AuthController@register');
 $router->get('/auth/confirm-password/{uuid}', 'AuthController@confirm');
 $router->get('/auth/regenerate-token/{uuid}', 'AuthController@regenerate');
+$router->post('/auth/reset-password', 'AuthController@reset');
 
 $router->post('/api/logs', 'LogsApiAuthController@auth');

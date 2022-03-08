@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\RegisterEmailEvent::class => [
             \App\Listeners\RegisterEmailListener::class,
         ],
+        \App\Events\ResetPasswordEvent::class => [
+            \App\Listeners\ResetPasswordListener::class,
+        ],
     ];
 
     /**

@@ -5,7 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 
-class RegisterEmail extends Mailable
+class ResetPassword extends Mailable
 {
     use Queueable;
 
@@ -31,6 +31,6 @@ class RegisterEmail extends Mailable
      */
     public function build() : RegisterEmail
     {
-        return $this->view('emails.register')->with('data', $this->data);
+        return $this->view('emails.password')->with('data', $this->data);
     }
 }

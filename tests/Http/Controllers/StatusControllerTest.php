@@ -6,10 +6,13 @@ use App\Enums\StatusId;
 use App\Models\Status;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Testing\DatabaseMigrations;
+use Laravel\Lumen\Testing\WithoutEvents;
 use Tests\TestCase;
 
 class StatusControllerTest extends TestCase
 {
+    use WithoutEvents;
+
     use DatabaseMigrations {
         runDatabaseMigrations as baseRunDatabaseMigrations;
     }

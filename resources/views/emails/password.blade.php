@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Confirm registry</title>
+    <title>Reset Password</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -350,22 +350,7 @@
                     <tr>
                       <td>
                         <p>Hi there,</p>
-                        <p>Confirm your registration</p>
-                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                          <tbody>
-                            <tr>
-                              <td align="left">
-                                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                                  <tbody>
-                                    <tr>
-                                      <td> <a href="/auth/confirm/{{ $data['uuid'] }}" target="_blank">Confirm</a> </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <p>Your new password is {{ $data['password'] }}.</p>
                       </td>
                     </tr>
                   </table>

@@ -9,11 +9,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class LogsApiAuthController extends Controller
-{    
+{
     /**
      * @var LogsApiAuthService authService
      */
-    private LogsApiAuthService $authService;    
+    private LogsApiAuthService $authService;
     /**
      * @var EventService eventService
      */
@@ -26,7 +26,7 @@ class LogsApiAuthController extends Controller
         $this->authService = $authService;
         $this->eventService = $eventService;
     }
-    
+
     /**
      * auth
      *
@@ -41,7 +41,7 @@ class LogsApiAuthController extends Controller
             'reason' => $result['code'],
             'message' => $result,
         ];
-        $this->eventService->createUserEvent($request, $logdata);
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
             ['content' => $result['content'], 'errors' => $result['errors'],],
             $result['code']
