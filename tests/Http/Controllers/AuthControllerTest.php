@@ -466,4 +466,36 @@ class AuthControllerTest extends TestCase
         $result->seeStatusCode($code);
         $result->seeJson($data);
     }
+
+    public function test_Reset_WhenEmailExists_ThenPasswordResetAndStatusOk() : void
+    {
+
+        // given
+        $email = 'email@example.com';
+        $data = ['email' => $email,];
+        $code = Response::HTTP_OK;
+
+        // when
+        $result = $this->post('/auth/reset-password', $data);
+
+        // then
+        $result->seeStatusCode($code);
+    }
+
+    public function test_Reset_WhenEmailNotExists_ThenStatusIsNotAcceptable() : void
+    {
+
+        // given
+        $email = 'email3545@example.com';
+        $data = ['email' => $email,];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+        $expectedResponse = ['content' => null, 'errors' => null];
+
+        // when
+        $result = $this->post('/auth/reset-password', $data);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($expectedResponse);
+    }
 }

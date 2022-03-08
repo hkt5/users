@@ -6,6 +6,7 @@ use App\Services\EventService;
 use App\Services\LoginService;
 use App\Services\PasswordConfirmationService;
 use App\Services\RegisterService;
+use App\Services\ResetPasswordService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -15,17 +16,20 @@ class AuthController extends Controller
     private LoginService $loginService;
     private RegisterService $registerService;
     private PasswordConfirmationService $passwordConfirmationService;
+    private ResetPasswordService $resetPasswordService;
 
     public function __construct(
         EventService $eventService,
         LoginService $loginService,
         RegisterService $registerService,
-        PasswordConfirmationService $passwordConfirmationService
+        PasswordConfirmationService $passwordConfirmationService,
+        ResetPasswordService $resetPasswordService
     ) {
         $this->eventService = $eventService;
         $this->loginService = $loginService;
         $this->registerService = $registerService;
         $this->passwordConfirmationService = $passwordConfirmationService;
+        $this->resetPasswordService = $resetPasswordService;
     }
 
     public function login(Request $request) : JsonResponse
@@ -35,7 +39,7 @@ class AuthController extends Controller
             'reason' => $result['code'],
             'message' => $result,
         ];
-        $this->eventService->createUserEvent($request, $logdata);
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
             ['content' => $result['content'], 'errors' => $result['errors'],],
             $result['code']
@@ -49,7 +53,7 @@ class AuthController extends Controller
             'reason' => $result['code'],
             'message' => $result,
         ];
-        $this->eventService->createUserEvent($request, $logdata);
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
             ['content' => $result['content'], 'errors' => $result['errors'],],
             $result['code']
@@ -63,7 +67,7 @@ class AuthController extends Controller
             'reason' => $result['code'],
             'message' => $result,
         ];
-        $this->eventService->createUserEvent($request, $logdata);
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
             ['content' => $result['content'], 'errors' => $result['errors'],],
             $result['code']
@@ -77,7 +81,21 @@ class AuthController extends Controller
             'reason' => $result['code'],
             'message' => $result,
         ];
-        $this->eventService->createUserEvent($request, $logdata);
+        $this->eventService->logEvent($request, $logdata);
+        return response()->json(
+            ['content' => $result['content'], 'errors' => $result['errors'],],
+            $result['code']
+        );
+    }
+
+    public function reset(Request $request) : JsonResponse
+    {
+        $result = $this->resetPasswordService->reset($request->all());
+        $logdata = [
+            'reason' => $result['code'],
+            'message' => $result,
+        ];
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
             ['content' => $result['content'], 'errors' => $result['errors'],],
             $result['code']

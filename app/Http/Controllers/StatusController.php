@@ -2,26 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\EventService;
 use App\Services\StatusService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
     /**
-     * @var StatusService service
+     * @var StatusService statusService
      */
-    private StatusService $service;
+    private StatusService $statusService;
+    /**
+     * @var EventService eventService
+     */
+    private EventService $eventService;
 
     /**
      * __construct
      *
-     * @param StatusService service
+     * @param StatusService statusService
+     * @param EventService eventService
      *
      * @return void
      */
-    public function __construct(StatusService $service)
-    {
-        $this->service = $service;
+    public function __construct(
+        StatusService $statusService,
+        EventService $eventService
+    ) {
+        $this->statusService = $statusService;
+        $this->eventService = $eventService;
     }
 
     /**
@@ -29,12 +39,17 @@ class StatusController extends Controller
      *
      * @return JsonResponse
      */
-    public function findAll() : JsonResponse
+    public function findAll(Request $request) : JsonResponse
     {
-        $data = $this->service->findAll();
+        $result = $this->statusService->findAll();
+        $logdata = [
+            'reason' => $result['code'],
+            'message' => $result,
+        ];
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
-            ['content' => $data['content'], 'errors' => $data['errors'],],
-            $data['code']
+            ['content' => $result['content'], 'errors' => $result['errors'],],
+            $result['code']
         );
     }
 
@@ -45,12 +60,17 @@ class StatusController extends Controller
      *
      * @return JsonResponse
      */
-    public function findById(int $id) : JsonResponse
+    public function findById(Request $request, int $id) : JsonResponse
     {
-        $data = $this->service->findById($id);
+        $result = $this->statusService->findById($id);
+        $logdata = [
+            'reason' => $result['code'],
+            'message' => $result,
+        ];
+        $this->eventService->logEvent($request, $logdata);
         return response()->json(
-            ['content' => $data['content'], 'errors' => $data['errors'],],
-            $data['code']
+            ['content' => $result['content'], 'errors' => $result['errors'],],
+            $result['code']
         );
     }
 }

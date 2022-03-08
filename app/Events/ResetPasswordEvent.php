@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-class RegisterEmailEvent extends Event
+class ResetPasswordEvent extends Event
 {
     /**
      * @var array data
