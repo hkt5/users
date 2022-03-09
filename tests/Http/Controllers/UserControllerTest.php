@@ -146,4 +146,135 @@ class UserControllerTest extends TestCase
         // then
         $result->seeStatusCode($code);
     }
+
+    public function test_UpdatePassword_WhenUuidNotExists_ThenReturnUnathorized() : void
+    {
+
+        // given
+        $data = [
+            'old_password' => 'P@ssw0rd',
+            'new_password' => 'P@sswordP@ssw0rd',
+        ];
+        $expctedArray = [
+            'content' => null, 'errors' => null,
+        ];
+        $code = Response::HTTP_UNAUTHORIZED;
+
+        // when
+        $result = $this->post(
+            '/user/update-password',
+            $data,
+            ['Bareer' => base64_encode("uuid")]
+        );
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($expctedArray);
+    }
+
+    public function test_UpdatePassword_WhenFiledsAreEmpty_ThenReturnNotAcceptable() : void
+    {
+
+        // given
+        $user = User::find(1);
+        $data = [];
+        $expctedArray = [
+            'content' => null, 'errors' => [
+                'old_password' => [0 => 'The old password field is required.'],
+                'new_password' => [0 => 'The new password field is required.'],
+            ],
+        ];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post(
+            '/user/update-password',
+            $data,
+            ['Bareer' => base64_encode($user->uuid)]
+        );
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($expctedArray);
+    }
+
+    public function test_UpdatePassword_WhenNewPasswordToShort_ThenReturnNotAcceptable() : void
+    {
+
+        // given
+        $user = User::find(1);
+        $data = [
+            'old_password' => 'P@ssw0rd',
+            'new_password' => 'P@ssw0rd',
+        ];
+        $expctedArray = [
+            'content' => null, 'errors' => [
+                'new_password' => [
+                    0 => 'The new password must be at least 12 characters.',
+                ],
+            ],
+        ];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post(
+            '/user/update-password',
+            $data,
+            ['Bareer' => base64_encode($user->uuid)]
+        );
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($expctedArray);
+    }
+
+    public function test_UpdatePassword_WhenOldPasswordNotExists_ThenReturnNotAcceptable() : void
+    {
+
+        // given
+        $user = User::find(1);
+        $data = [
+            'old_password' => 'P@ssw0rd1',
+            'new_password' => 'P@ssw0rdP@ssw0rd',
+        ];
+        $expctedArray = [
+            'content' => null, 'errors' => [
+                'old_password' => [0 => 'Old password not exists.'],
+            ],
+        ];
+        $code = Response::HTTP_NOT_ACCEPTABLE;
+
+        // when
+        $result = $this->post(
+            '/user/update-password',
+            $data,
+            ['Bareer' => base64_encode($user->uuid)]
+        );
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($expctedArray);
+    }
+
+    public function test_UpdatePassword_WhenDataIsOk_ThenReturnOk() : void
+    {
+
+        // given
+        $user = User::find(1);
+        $data = [
+            'old_password' => 'P@ssw0rd',
+            'new_password' => 'P@ssw0rdP@ssw0rd',
+        ];
+        $code = Response::HTTP_OK;
+
+        // when
+        $result = $this->post(
+            '/user/update-password',
+            $data,
+            ['Bareer' => base64_encode($user->uuid)]
+        );
+
+        // then
+        $result->seeStatusCode($code);
+    }
 }
