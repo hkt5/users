@@ -36,6 +36,34 @@ class UserService
     }
 
     /**
+     * findUser
+     *
+     * @param string uuid
+     *
+     * @return array
+     */
+    public function findUser(string $uuid) : array
+    {
+        $authUser = $this->userRepository->findByUuid(base64_decode($uuid));
+        if ($authUser === null) {
+            return $this->responseService->response(
+                null,
+                null,
+                Response::HTTP_UNAUTHORIZED
+            );
+        } else {
+            $responseUser = $this->userRepository->updateExpiredToken([
+                'id' => $authUser->id, 'date' => Carbon::now(),
+            ]);
+            return $this->responseService->response(
+                ['user' => $responseUser],
+                null,
+                Response::HTTP_OK
+            );
+        }
+    }
+
+    /**
      * updateEmail
      *
      * @param array data

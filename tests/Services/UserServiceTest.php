@@ -25,6 +25,37 @@ class UserServiceTest extends TestCase
         $this->artisan('db:seed');
     }
 
+    public function test_FindUSer_WhenUuidExists_ThenReturnUserAndOkStatus() : void
+    {
+        // given
+        $user = User::find(1);
+        $code = Response::HTTP_OK;
+        $service = new UserService(new UserRepository(), new ResponseService());
+
+        // when
+        $result = $service->findUser(base64_encode($user->uuid));
+
+        // then
+        $this->assertEquals($code, $result['code']);
+    }
+
+    public function test_FindUSer_WhenUuidNotExists_ThenReturnUnathorized() : void
+    {
+        // given
+        $uuid = "uuid";
+        $code = Response::HTTP_UNAUTHORIZED;
+        $expectedArray = [
+            'content' => null, "errors" => null, 'code' => $code
+        ];
+        $service = new UserService(new UserRepository(), new ResponseService());
+
+        // when
+        $result = $service->findUser(base64_encode($uuid));
+
+        // then
+        $this->assertEquals($expectedArray, $result);
+    }
+
     public function test_UpdateEmail_WhenTokenNotExists_ThenReturnUnauthorized() : void
     {
 
