@@ -29,4 +29,8 @@ $router->get('/auth/confirm-password/{uuid}', 'AuthController@confirm');
 $router->get('/auth/regenerate-token/{uuid}', 'AuthController@regenerate');
 $router->post('/auth/reset-password', 'AuthController@reset');
 
+$router->group(['middleware' => 'auth'], function () use ($router) {
+    $router->post('/user/update-email', 'UserController@updateEmail');
+});
+
 $router->post('/api/logs', 'LogsApiAuthController@auth');

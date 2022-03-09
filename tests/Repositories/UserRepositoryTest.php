@@ -371,6 +371,26 @@ class UserRepositoryTest extends TestCase
         $this->seeInDatabase('users', ['updated_at' => $updatedAt]);
     }
 
+    public function test_UpdateEmail_WhenUserExistsAndEmailIsUnique_ThenUpdateEmail() : void
+    {
+
+        // given
+        $data = [
+            'id' => 1,
+            'email' => 'email1111@example.com',
+            'date' => Carbon::now(),
+        ];
+        $repository = new UserRepository();
+
+        // when
+        $user = $repository->updateEmail($data);
+
+        // then
+        $this->assertNotNull($user);
+        $this->seeInDatabase('users', ['email' => $data['email']]);
+        $this->seeInDatabase('users', ['updated_at' => $data['date']]);
+    }
+
     public function test_UpdatePassword_WhenUserExists_ThenUpdatePassword() : void
     {
 

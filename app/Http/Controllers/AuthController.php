@@ -12,12 +12,41 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    /**
+     * @var EventService eventService
+     */
+    /**
+     * @var EventService eventService
+     */
     private EventService $eventService;
+    /**
+     * @var LoginService loginService
+     */
     private LoginService $loginService;
+    /**
+     * @var RegisterService registerService
+     */
     private RegisterService $registerService;
+    /**
+     * @var PasswordConfirmationService passwordConfirmationService
+     */
     private PasswordConfirmationService $passwordConfirmationService;
+    /**
+     * @var ResetPasswordService resetPasswordService
+     */
     private ResetPasswordService $resetPasswordService;
 
+    /**
+     * __construct
+     *
+     * @param EventService eventService
+     * @param LoginService loginService
+     * @param RegisterService registerService
+     * @param PasswordConfirmationService passwordConfirmationService
+     * @param ResetPasswordService resetPasswordService
+     *
+     * @return void
+     */
     public function __construct(
         EventService $eventService,
         LoginService $loginService,
@@ -32,6 +61,13 @@ class AuthController extends Controller
         $this->resetPasswordService = $resetPasswordService;
     }
 
+    /**
+     * login
+     *
+     * @param Request request
+     *
+     * @return JsonResponse
+     */
     public function login(Request $request) : JsonResponse
     {
         $result = $this->loginService->login($request->all());
@@ -46,6 +82,13 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * register
+     *
+     * @param Request request
+     *
+     * @return JsonResponse
+     */
     public function register(Request $request) : JsonResponse
     {
         $result = $this->registerService->registryNewUser($request->all());
@@ -60,6 +103,14 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * confirm
+     *
+     * @param Request request
+     * @param string uuid
+     *
+     * @return JsonResponse
+     */
     public function confirm(Request $request, string $uuid) : JsonResponse
     {
         $result = $this->passwordConfirmationService->confirm(['uuid' => $uuid]);
@@ -74,6 +125,14 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * regenerate
+     *
+     * @param Request request
+     * @param string uuid
+     *
+     * @return JsonResponse
+     */
     public function regenerate(Request $request, string $uuid) : JsonResponse
     {
         $result = $this->passwordConfirmationService->regenerateToken(['uuid' => $uuid]);
@@ -88,6 +147,13 @@ class AuthController extends Controller
         );
     }
 
+    /**
+     * reset
+     *
+     * @param Request request
+     *
+     * @return JsonResponse
+     */
     public function reset(Request $request) : JsonResponse
     {
         $result = $this->resetPasswordService->reset($request->all());

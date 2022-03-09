@@ -123,6 +123,22 @@ class UserRepository
     }
 
     /**
+     * updateEmail
+     *
+     * @param array data
+     *
+     * @return User
+     */
+    public function updateEmail(array $data) : ?User
+    {
+        $user = User::find($data['id']);
+        $user->email = $data['email'];
+        $user->updated_at = $data['date'];
+        $user->save();
+        return $user;
+    }
+
+    /**
      * updatePassword
      *
      * @param array data
