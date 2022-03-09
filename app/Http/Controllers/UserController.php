@@ -64,4 +64,28 @@ class UserController extends Controller
             $result['code']
         );
     }
+
+    /**
+     * updatePassword
+     *
+     * @param Request request
+     *
+     * @return JsonResponse
+     */
+    public function updatePassword(Request $request) : JsonResponse
+    {
+        $result = $this->userService->updatePassword(
+            $request->all(),
+            $request->header('Bareer')
+        );
+        $logdata = [
+            'reason' => $result['code'],
+            'message' => $result,
+        ];
+        $this->eventService->logEvent($request, $logdata);
+        return response()->json(
+            ['content' => $result['content'], 'errors' => $result['errors'],],
+            $result['code']
+        );
+    }
 }

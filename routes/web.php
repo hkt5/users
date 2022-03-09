@@ -32,6 +32,7 @@ $router->post('/auth/reset-password', 'AuthController@reset');
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/user', 'UserController@findUser');
     $router->post('/user/update-email', 'UserController@updateEmail');
+    $router->post('/user/update-password', 'UserController@updatePassword');
 });
 
 $router->post('/api/logs', 'LogsApiAuthController@auth');
