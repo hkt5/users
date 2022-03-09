@@ -27,6 +27,35 @@ class UserControllerTest extends TestCase
         $this->artisan('db:seed');
     }
 
+    public function test_FindUSer_WhenUuidExists_ThenReturnUserAndOkStatus() : void
+    {
+        // given
+        $user = User::find(1);
+        $code = Response::HTTP_OK;
+        // when
+        $result = $this->get('/user', ['Bareer' => base64_encode($user->uuid)]);
+
+        // then
+        $result->seeStatusCode($code);
+    }
+
+    public function test_FindUSer_WhenUuidNotExists_ThenReturnUnathorized() : void
+    {
+        // given
+        $uuid = "uuid";
+        $code = Response::HTTP_UNAUTHORIZED;
+        $expectedArray = [
+            'content' => null, "errors" => null,
+        ];
+
+        // when
+        $result = $this->get('/user', ['Bareer' => base64_encode($uuid)]);
+
+        // then
+        $result->seeStatusCode($code);
+        $result->seeJson($expectedArray);
+    }
+
     public function test_UpdateEmail_WhenTokenNotExists_ThenReturnUnauthorized() : void
     {
 

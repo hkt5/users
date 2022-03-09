@@ -21,6 +21,27 @@ class UserController extends Controller
     }
 
     /**
+     * findUser
+     *
+     * @param Request request
+     *
+     * @return JsonResponse
+     */
+    public function findUser(Request $request) : JsonResponse
+    {
+        $result = $this->userService->findUser($request->header('Bareer'));
+        $logdata = [
+            'reason' => $result['code'],
+            'message' => $result,
+        ];
+        $this->eventService->logEvent($request, $logdata);
+        return response()->json(
+            ['content' => $result['content'], 'errors' => $result['errors'],],
+            $result['code']
+        );
+    }
+
+    /**
      * updateEmail
      *
      * @param Request request
