@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\RoleId;
 use App\Repositories\UserRepository;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
-class Authenticate
+class AdminAuthenticate
 {
 
     /**
@@ -33,7 +33,10 @@ class Authenticate
                         'status_id' => $user->status_id
                     ]
                 );
-                if (($authUser != null) && ($authUser->role_id == RoleId::ADMINISTRATOR_ID)) {
+                if ($authUser != null) {
+                    $userRepository->updateExpiredToken([
+                        'id' => $authUser->id, 'date' => Carbon::now(),
+                    ]);
                     return $next($request);
                 } else {
                     return response('Unauthorized.', 401);

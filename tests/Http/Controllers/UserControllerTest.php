@@ -67,7 +67,7 @@ class UserControllerTest extends TestCase
         ];
         $code = Response::HTTP_UNAUTHORIZED;
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-email',
             $data,
             ['Bareer' => base64_encode($uuid)]
@@ -92,7 +92,7 @@ class UserControllerTest extends TestCase
         ];
         $code = Response::HTTP_NOT_ACCEPTABLE;
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-email',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
@@ -117,7 +117,7 @@ class UserControllerTest extends TestCase
         ];
         $code = Response::HTTP_NOT_ACCEPTABLE;
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-email',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
@@ -137,7 +137,7 @@ class UserControllerTest extends TestCase
         $code = Response::HTTP_OK;
 
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-email',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
@@ -161,7 +161,7 @@ class UserControllerTest extends TestCase
         $code = Response::HTTP_UNAUTHORIZED;
 
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-password',
             $data,
             ['Bareer' => base64_encode("uuid")]
@@ -187,7 +187,7 @@ class UserControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-password',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
@@ -217,7 +217,7 @@ class UserControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-password',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
@@ -245,7 +245,7 @@ class UserControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-password',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
@@ -268,7 +268,7 @@ class UserControllerTest extends TestCase
         $code = Response::HTTP_OK;
 
         // when
-        $result = $this->post(
+        $result = $this->put(
             '/user/update-password',
             $data,
             ['Bareer' => base64_encode($user->uuid)]
