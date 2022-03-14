@@ -36,7 +36,7 @@ class LogsApiAuthController extends Controller
      */
     public function auth(Request $request) : JsonResponse
     {
-        $result = $this->authService->auth($request->header('Bareer'));
+        $result = $this->authService->auth($request->header('Baerer'));
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,

@@ -49,7 +49,7 @@ class LogsApiAuthControllerTest extends TestCase
         $status = Response::HTTP_OK;
 
         // when
-        $result = $this->post('/api/logs', [], ['Bareer' => $token]);
+        $result = $this->post('/api/logs', [], ['Baerer' => $token]);
 
         // then
         $this->seeStatusCode($status);
@@ -75,7 +75,7 @@ class LogsApiAuthControllerTest extends TestCase
         $status = Response::HTTP_UNAUTHORIZED;
 
         // when
-        $result = $this->post('/api/logs', [], ['Bareer' => $token]);
+        $result = $this->post('/api/logs', [], ['Baerer' => $token]);
 
         // then
         $result->seeJsonContains($expectedArray);

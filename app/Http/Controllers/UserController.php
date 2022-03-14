@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function findUser(Request $request) : JsonResponse
     {
-        $result = $this->userService->findUser($request->header('Bareer'));
+        $result = $this->userService->findUser($request->header('Baerer'));
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         $result = $this->userService->updateEmail(
             $request->all(),
-            $request->header('Bareer')
+            $request->header('Baerer')
         );
         $logdata = [
             'reason' => $result['code'],
@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         $result = $this->userService->updatePassword(
             $request->all(),
-            $request->header('Bareer')
+            $request->header('Baerer')
         );
         $logdata = [
             'reason' => $result['code'],

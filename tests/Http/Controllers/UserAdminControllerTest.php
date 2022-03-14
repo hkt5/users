@@ -39,7 +39,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_OK;
 
         // when
-        $result = $this->get('/user-admin/all', ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->get('/user-admin/all', ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -52,7 +52,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_UNAUTHORIZED;
 
         // when
-        $result = $this->get('/user-admin/all', ['Bareer' => base64_encode("uuid")]);
+        $result = $this->get('/user-admin/all', ['Baerer' => base64_encode("uuid")]);
 
         // then
         $result->seeStatusCode($code);
@@ -68,7 +68,7 @@ class UserAdminControllerTest extends TestCase
         // when
         $result = $this->get(
             '/user-admin/by-id/'.$user->id,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -85,7 +85,7 @@ class UserAdminControllerTest extends TestCase
         // when
         $result = $this->get(
             '/user-admin/by-id/'.$user->id,
-            ['Bareer' => base64_encode("uuid")]
+            ['Baerer' => base64_encode("uuid")]
         );
 
         // then
@@ -102,7 +102,7 @@ class UserAdminControllerTest extends TestCase
         // when
         $result = $this->get(
             '/user-admin/by-id/'.-1,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -124,7 +124,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_OK;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -146,7 +146,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_UNAUTHORIZED;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => base64_encode($uuid)]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => base64_encode($uuid)]);
 
         // then
         $response->seeStatusCode($code);
@@ -168,7 +168,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -192,7 +192,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -216,7 +216,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -240,7 +240,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -264,7 +264,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -288,7 +288,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -312,7 +312,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $response = $this->post('/user-admin/create', $data, ['Bareer' => $uuid]);
+        $response = $this->post('/user-admin/create', $data, ['Baerer' => $uuid]);
 
         // then
         $response->seeStatusCode($code);
@@ -331,7 +331,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_OK;
 
         // when
-        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -348,7 +348,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_UNAUTHORIZED;
 
         // when
-        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Bareer' => base64_encode("uuid")]);
+        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Baerer' => base64_encode("uuid")]);
 
         // then
         $result->seeStatusCode($code);
@@ -366,7 +366,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_FOUND;
 
         // when
-        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -385,7 +385,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -407,7 +407,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -429,7 +429,7 @@ class UserAdminControllerTest extends TestCase
         $code = Response::HTTP_NOT_ACCEPTABLE;
 
         // when
-        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->put('/user-admin/update-email/'.$currentUserId, $data, ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -452,7 +452,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->put(
             '/user-admin/update-role-and-status/'.$currentUserId,
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -474,7 +474,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->put(
             '/user-admin/update-role-and-status/'.$currentUserId,
             $data,
-            ['Bareer' => base64_encode("uuid")]
+            ['Baerer' => base64_encode("uuid")]
         );
 
         // then
@@ -497,7 +497,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->put(
             '/user-admin/update-role-and-status/'.$currentUserId,
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -521,7 +521,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->put(
             '/user-admin/update-role-and-status/'.$currentUserId,
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -548,7 +548,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->put(
             '/user-admin/update-role-and-status/'.$currentUserId,
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -575,7 +575,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->put(
             '/user-admin/update-role-and-status/'.$currentUserId,
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -594,7 +594,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->delete(
             '/user-admin/delete/'.$user->id,
             [],
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -612,7 +612,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->delete(
             '/user-admin/delete/'.$user->id,
             [],
-            ['Bareer' => base64_encode("uuid")]
+            ['Baerer' => base64_encode("uuid")]
         );
 
         // then
@@ -630,7 +630,7 @@ class UserAdminControllerTest extends TestCase
         $result = $this->delete(
             '/user-admin/delete/'.-1,
             [],
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then

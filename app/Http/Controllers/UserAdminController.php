@@ -44,7 +44,7 @@ class UserAdminController extends Controller
      */
     public function findAll(Request $request) : JsonResponse
     {
-        $result = $this->userAdminService->findAll($request->header('Bareer'));
+        $result = $this->userAdminService->findAll($request->header('Baerer'));
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,
@@ -66,7 +66,7 @@ class UserAdminController extends Controller
      */
     public function findById(Request $request, int $id) : JsonResponse
     {
-        $result = $this->userAdminService->findById($request->header('Bareer'), $id);
+        $result = $this->userAdminService->findById($request->header('Baerer'), $id);
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,
@@ -87,7 +87,7 @@ class UserAdminController extends Controller
      */
     public function create(Request $request) : JsonResponse
     {
-        $result = $this->userAdminService->create($request->all(), $request->header('Bareer'));
+        $result = $this->userAdminService->create($request->all(), $request->header('Baerer'));
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,
@@ -109,7 +109,7 @@ class UserAdminController extends Controller
      */
     public function updateEmail(Request $request, int $id) : JsonResponse
     {
-        $result = $this->userAdminService->updateEmail($request->all(), $request->header('Bareer'), $id);
+        $result = $this->userAdminService->updateEmail($request->all(), $request->header('Baerer'), $id);
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,
@@ -123,7 +123,7 @@ class UserAdminController extends Controller
 
     public function updateRoleandStatus(Request $request, int $id) : JsonResponse
     {
-        $result = $this->userAdminService->updateRoleAndStatus($request->all(), $request->header('Bareer'), $id);
+        $result = $this->userAdminService->updateRoleAndStatus($request->all(), $request->header('Baerer'), $id);
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,
@@ -145,7 +145,7 @@ class UserAdminController extends Controller
      */
     public function destroy(Request $request, int $id) : JsonResponse
     {
-        $result = $this->userAdminService->destroy($request->header('Bareer'), $id);
+        $result = $this->userAdminService->destroy($request->header('Baerer'), $id);
         $logdata = [
             'reason' => $result['code'],
             'message' => $result,

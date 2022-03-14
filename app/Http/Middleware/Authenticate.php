@@ -21,14 +21,14 @@ class Authenticate
     public function handle(Request $request, Closure $next)
     {
         $userRepository = new UserRepository();
-        if ($request->header('bareer') !== null) {
+        if ($request->header('Baerer') !== null) {
             $user = $userRepository->findByUuid(
-                base64_decode($request->header('bareer'))
+                base64_decode($request->header('Baerer'))
             );
             if ($user != null) {
                 $authUser = $userRepository->findAuthUser(
                     [
-                        'uuid' => base64_decode($request->header('bareer')),
+                        'uuid' => base64_decode($request->header('Baerer')),
                         'role_id' => $user->role_id,
                         'status_id' => $user->status_id
                     ]

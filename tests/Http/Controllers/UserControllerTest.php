@@ -33,7 +33,7 @@ class UserControllerTest extends TestCase
         $user = User::find(1);
         $code = Response::HTTP_OK;
         // when
-        $result = $this->get('/user', ['Bareer' => base64_encode($user->uuid)]);
+        $result = $this->get('/user', ['Baerer' => base64_encode($user->uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -49,7 +49,7 @@ class UserControllerTest extends TestCase
         ];
 
         // when
-        $result = $this->get('/user', ['Bareer' => base64_encode($uuid)]);
+        $result = $this->get('/user', ['Baerer' => base64_encode($uuid)]);
 
         // then
         $result->seeStatusCode($code);
@@ -70,7 +70,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-email',
             $data,
-            ['Bareer' => base64_encode($uuid)]
+            ['Baerer' => base64_encode($uuid)]
         );
 
         // then
@@ -95,7 +95,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-email',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -120,7 +120,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-email',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -140,7 +140,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-email',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -164,7 +164,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-password',
             $data,
-            ['Bareer' => base64_encode("uuid")]
+            ['Baerer' => base64_encode("uuid")]
         );
 
         // then
@@ -190,7 +190,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-password',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -220,7 +220,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-password',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -248,7 +248,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-password',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
@@ -271,7 +271,7 @@ class UserControllerTest extends TestCase
         $result = $this->put(
             '/user/update-password',
             $data,
-            ['Bareer' => base64_encode($user->uuid)]
+            ['Baerer' => base64_encode($user->uuid)]
         );
 
         // then
