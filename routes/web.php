@@ -31,8 +31,17 @@ $router->post('/auth/reset-password', 'AuthController@reset');
 
 $router->group(['middleware' => 'auth'], function () use ($router) {
     $router->get('/user', 'UserController@findUser');
-    $router->post('/user/update-email', 'UserController@updateEmail');
-    $router->post('/user/update-password', 'UserController@updatePassword');
+    $router->put('/user/update-email', 'UserController@updateEmail');
+    $router->put('/user/update-password', 'UserController@updatePassword');
+});
+
+$router->group(['middleware' => 'admin'], function () use ($router) {
+    $router->get('/user-admin/all', 'UserAdminController@findAll');
+    $router->get('/user-admin/by-id/{id}', 'UserAdminController@findById');
+    $router->post('/user-admin/create', 'UserAdminController@create');
+    $router->put('/user-admin/update-email/{id}', 'UserAdminController@updateEmail');
+    $router->put('/user-admin/update-role-and-status/{id}', 'UserAdminController@updateroleAndStatus');
+    $router->delete('/user-admin/delete/{id}', 'UserAdminController@destroy');
 });
 
 $router->post('/api/logs', 'LogsApiAuthController@auth');
