@@ -6,11 +6,11 @@ jobs:
     strategy:
       matrix:
         operating-system: ['ubuntu-latest']
-        php-versions: ['8.0']
+        php-versions: ['8.0.16']
         phpunit-versions: ['latest']
         include:
           - operating-system: 'ubuntu-latest'
-            php-versions: '8.0'
+            php-versions: '8.0.16'
     services:
       mysql:
         image: mysql:latest
@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: nanasess/setup-php@master
         with:
-          php-version: '8.0'
+          php-version: '8.0.16'
       - name: Copy .env
         run: |
           php -r "file_exists('.env') || copy('.env.github', '.env');"
